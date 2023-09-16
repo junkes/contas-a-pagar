@@ -34,7 +34,7 @@ export default defineComponent({
         return alert('preencha todos os campos!')
       }
 
-      contas.value.push({
+      contas.push({
         id: Date.now(),
         ...conta.value,
         situacao: 'AB'
