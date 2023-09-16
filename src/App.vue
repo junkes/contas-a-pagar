@@ -1,29 +1,23 @@
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from "vue";
 export default defineComponent({
   setup() {
     const conta = ref({
-      descricao: '',
-      valor: '',
-      vencimento: ''
-    })
+      descricao: "",
+      valor: "",
+      vencimento: "",
+    });
 
-    const contas = [
-      {
-        id: 1,
-        descricao: 'academia',
-        valor: 100,
-        vencimento: '2023-09-15',
-        situacao: 'AB'
+    const contas = ref([]);
+
+    const storage = {
+      setContas(contasArray) {
+        localStorage.setItem("contas", JSON.stringify(contasArray));
       },
-      {
-        id: 2,
-        descricao: 'energia',
-        valor: 180,
-        vencimento: '2023-09-25',
-        situacao: 'AB'
-      }
-    ]
+      getContas() {
+        return JSON.parse(localStorage.getItem("contas"));
+      },
+    };
 
     const cadastrar = () => {
       if (
@@ -31,29 +25,35 @@ export default defineComponent({
         conta.value?.valor?.length < 1 ||
         conta.value?.vencimento?.length < 1
       ) {
-        return alert('preencha todos os campos!')
+        return alert("preencha todos os campos!");
       }
 
-      contas.push({
+      contas.value.push({
         id: Date.now(),
         ...conta.value,
-        situacao: 'AB'
-      })
+        situacao: "AB",
+      });
+
+      storage.setContas(contas.value);
 
       conta.value = {
-        descricao: '',
-        valor: '',
-        vencimento: ''
-      }
-    }
+        descricao: "",
+        valor: "",
+        vencimento: "",
+      };
+    };
+
+    onMounted(() => {
+      contas.value = storage.getContas();
+    });
 
     return {
       contas,
       cadastrar,
-      conta
-    }
-  }
-})
+      conta,
+    };
+  },
+});
 </script>
 
 <template>
