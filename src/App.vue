@@ -8,7 +8,7 @@ export default defineComponent({
       vencimento: ''
     })
 
-    const contas = ref([
+    const contas = [
       {
         id: 1,
         descricao: 'academia',
@@ -23,7 +23,7 @@ export default defineComponent({
         vencimento: '2023-09-25',
         situacao: 'AB'
       }
-    ])
+    ]
 
     const cadastrar = () => {
       if (
