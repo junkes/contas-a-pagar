@@ -43,6 +43,11 @@ export default defineComponent({
       };
     };
 
+    const apagar = (id) => {
+      contas.value = contas.value.filter((conta) => conta.id !== id);
+      storage.setContas(contas.value);
+    };
+
     onMounted(() => {
       contas.value = storage.getContas();
     });
@@ -51,6 +56,7 @@ export default defineComponent({
       contas,
       cadastrar,
       conta,
+      apagar,
     };
   },
 });
@@ -72,12 +78,18 @@ export default defineComponent({
           />
         </div>
         <div class="col-6 mb-2">
-          <input v-model="conta.valor" type="text" class="form-control" placeholder="valor" />
+          <input
+            v-model="conta.valor"
+            type="number"
+            step="0.01"
+            class="form-control"
+            placeholder="valor"
+          />
         </div>
         <div class="col-6 mb-2">
           <input
             v-model="conta.vencimento"
-            type="text"
+            type="date"
             class="form-control"
             placeholder="vencimento"
           />
@@ -108,7 +120,7 @@ export default defineComponent({
           <td>{{ conta.situacao }}</td>
           <td>
             <button class="btn btn-sm btn-primary" style="margin-right: 4px">E</button>
-            <button class="btn btn-sm btn-danger">A</button>
+            <button @click="apagar(conta.id)" class="btn btn-sm btn-danger">A</button>
           </td>
         </tr>
       </tbody>
